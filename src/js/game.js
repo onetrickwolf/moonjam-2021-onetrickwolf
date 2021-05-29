@@ -17,6 +17,22 @@ client.on('message', (channel, tags, message, self) => {
     console.log(tags.emotes);
     let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 25;
     console.log(`https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`);
+
+    let emote_resource = `emote_${emote_id}`;
+
+    const loaderOptions = {
+        loadType: PIXI.LoaderResource.LOAD_TYPE.IMAGE,
+        xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
+    };
+
+    app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
+        console.log(resources);
+        let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
+
+        app.stage.addChild(emote_sprite);
+    });
+
+    app.loader.onError.add(() => { console.log('error')});
 });
 
 // Game
