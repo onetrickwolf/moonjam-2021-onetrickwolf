@@ -73,8 +73,8 @@ let bunny;
 
 app.loader.add('bunny', bunny_png).load((loader, resources) => {
     bunny = new PIXI.Sprite(resources.bunny.texture);
-    bunny.x = app.renderer.width / 2;
-    bunny.y = app.renderer.height / 2;
+    bunny.x = gameWidth / 2;
+    bunny.y = gameHeight / 2;
     bunny.anchor.x = 0.5;
     bunny.anchor.y = 0.5;
 
