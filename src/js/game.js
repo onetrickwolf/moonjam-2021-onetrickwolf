@@ -1,6 +1,26 @@
 import * as PIXI from 'pixi.js';
 import bunny_png from '../images/bunny.png'
 
+// Twitch Integration
+
+import tmi from 'tmi.js';
+
+const client = new tmi.Client({
+    channels: ['onetrickwolf']
+});
+
+client.connect();
+
+client.on('message', (channel, tags, message, self) => {
+    console.log(`${tags['display-name']}: ${message}`);
+    console.log(tags);
+    console.log(tags.emotes);
+    let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 25;
+    console.log(`https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`);
+});
+
+// Game
+
 const gameWidth = 1280;
 const gameHeight = 720;
 

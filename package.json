@@ -47,6 +47,7 @@
     "bootstrap": "^5.0.0-beta2",
     "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.5.1",
-    "pixi.js": "^6.0.4"
+    "pixi.js": "^6.0.4",
+    "tmi.js": "^1.8.3"
   }
 }
