@@ -5,3 +5,8 @@ body {
   background-color: pink;
   background: url('../images/electron-forge.png') no-repeat fixed center /120px;
 }
+
+canvas {
+  width: 1280px;
+  height: 720px;
+}

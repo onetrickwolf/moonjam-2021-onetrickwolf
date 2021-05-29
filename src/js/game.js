@@ -43,8 +43,17 @@ function add_emote(emote_resource, resources) {
     emote_sprite.x = Math.floor(Math.random() * gameWidth);
     emote_sprite.y = Math.floor(Math.random() * gameHeight);
 
+    const fit = calculateAspectRatioFit(emote_sprite.width, emote_sprite.height, 28, 28);
+    emote_sprite.width = fit.width;
+    emote_sprite.height = fit.height;
+
     app.stage.addChild(emote_sprite);
 }
+function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+    const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+    return { width: srcWidth*ratio, height: srcHeight*ratio };
+}
+
 
 // Game
 
@@ -55,6 +64,7 @@ const app = new PIXI.Application({
     backgroundColor: 0xd3d3d3,
     width: gameWidth,
     height: gameHeight,
+    resolution: window.devicePixelRatio,
 });
 
 document.body.appendChild(app.view);
