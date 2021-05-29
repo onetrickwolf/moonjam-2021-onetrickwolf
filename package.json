@@ -48,6 +48,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.5.1",
     "pixi.js": "^6.0.4",
+    "stats.js": "^0.17.0",
     "tmi.js": "^1.8.3"
   }
 }
