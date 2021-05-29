@@ -5,3 +5,5 @@ import './scss/app.scss';
 import "@fortawesome/fontawesome-free/js/all";
 
 import './js/index.js';
+
+import './js/game.js';

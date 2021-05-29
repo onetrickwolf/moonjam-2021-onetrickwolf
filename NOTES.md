@@ -1,0 +1,2 @@
+- ~~Using https://github.com/electron/electron-quick-start for basic electron setup~~
+- Switched to electron forge webpack template: https://github.com/theolazian/electron-webpack-bootstrap-fontawesome-jquery which is based off of https://www.electronforge.io/templates/webpack-template (needed this for easier node_module access and hot reload...am new to electron may be better way)
