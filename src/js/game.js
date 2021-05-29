@@ -25,15 +25,26 @@ client.on('message', (channel, tags, message, self) => {
         xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
     };
 
-    app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
-        console.log(resources);
-        let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
-
-        app.stage.addChild(emote_sprite);
-    });
-
-    app.loader.onError.add(() => { console.log('error')});
+    // Check if emote already exists in resources
+    if(!app.loader.resources.hasOwnProperty(emote_resource)) {
+        // Load if it doesn't
+        app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
+            add_emote(emote_resource, resources);
+        });
+    } else {
+        // Just add it if it does
+        add_emote(emote_resource, app.loader.resources);
+    }
 });
+
+function add_emote(emote_resource, resources) {
+    let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
+
+    emote_sprite.x = Math.floor(Math.random() * gameWidth);
+    emote_sprite.y = Math.floor(Math.random() * gameHeight);
+
+    app.stage.addChild(emote_sprite);
+}
 
 // Game
 
