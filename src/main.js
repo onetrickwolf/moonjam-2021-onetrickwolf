@@ -12,8 +12,8 @@ const createWindow = () => {
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
-    width: 800,
-    height: 600,
+    width: 1600,
+    height: 900,
   });
 
   // and load the index.html of the app.
