@@ -24,7 +24,7 @@ const app = new PIXI.Application({
 });
 
 let state = {
-    screen: 'playing' // Change to 'intro' for launch
+    screen: 'intro' // Change to 'intro' for launch, 'playing' for test
 }
 
 document.body.appendChild(app.view);
@@ -40,9 +40,14 @@ startText.buttonMode = true;
 startText.on('pointerup', onClick);
 app.stage.addChild(startText);
 
+const joined = new PIXI.Text('PLAYERS: 0');
+joined.x = 10;
+joined.y = 40;
+app.stage.addChild(joined);
+
 function onClick() {
     startText.visible = false;
     state.screen = 'playing';
 }
 
-export { app, gameWidth, gameHeight, state };
+export { app, gameWidth, gameHeight, state, joined };

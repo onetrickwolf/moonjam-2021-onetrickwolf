@@ -1,5 +1,5 @@
 import tmi from 'tmi.js';
-import { app, gameWidth, gameHeight, state } from './game';
+import { app, gameWidth, gameHeight, state, joined } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
 import { gsap } from "gsap";
@@ -29,7 +29,7 @@ export default function setupChat() {
 
         // Check if user name already exists, do nothing for now if it does
         if(!sheep_map.hasOwnProperty(tags['user-id'])) {
-            if(tags.emotes) {
+            if(tags.emotes || true) { // true added for testing
                 let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 305197735;
                 let emote_resource = `emote_${emote_id}`;
                 // Check if emote already exists in resources
@@ -70,6 +70,11 @@ export default function setupChat() {
                 gsap.to(sheep_map[tags['user-id']], {
                     x: movex, y: movey, duration: 3, onComplete: () => {
                         sheep_map[tags['user-id']].moving = false
+                        if(sheep_map[tags['user-id']].visible === false) {
+                            sheep_map[tags['user-id']].destroy();
+                            delete sheep_map[tags['user-id']];
+                            joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
+                        }
                     }
                 });
             }
@@ -82,8 +87,11 @@ export default function setupChat() {
                 let trueSheepPos = new PIXI.Point(sheep_map[sheep].x + sheep_area.x, sheep_map[sheep].y + sheep_area.y)
                 if (distanceBetweenTwoPoints(trueSheepPos, player.position) < 40) {
                     sheep_map[sheep].visible = false;
-                    // sheep_map[sheep].destroy();
-                    // delete sheep_map[sheep];
+                    if(!sheep_map[sheep].moving) {
+                        sheep_map[sheep].destroy();
+                        delete sheep_map[sheep];
+                        joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
+                    }
                 }
             }
         }
@@ -120,6 +128,8 @@ function add_emote(emote_resource, resources, tags) {
     emote_container.direction = null;
 
     sheep_map[tags['user-id']] = emote_container;
+
+    joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
 
     emote_container.addChild(emote_sprite);
     emote_container.addChild(name_text);
