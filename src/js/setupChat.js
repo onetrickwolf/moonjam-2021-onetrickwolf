@@ -3,6 +3,8 @@ import { app, gameWidth, gameHeight, state } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
 
+let sheep = [];
+
 export default function setupChat() {
     const client = new tmi.Client({
         channels: ['moonmoon']
@@ -36,9 +38,18 @@ export default function setupChat() {
             add_emote(emote_resource, app.loader.resources);
         }
     });
-}
 
-let sheep = [];
+    app.ticker.add((delta) => {
+        if(state.screen === 'playing') {
+            sheep.forEach((sprite, index) => {
+                if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
+                    sprite.destroy();
+                    sheep.splice(index, 1);
+                }
+            })
+        }
+    });
+}
 
 function add_emote(emote_resource, resources) {
     let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
@@ -54,17 +65,6 @@ function add_emote(emote_resource, resources) {
     emote_sprite.height = fit.height;
 
     sheep.push(emote_sprite);
-
-    app.ticker.add((delta) => {
-        if(state.screen === 'playing') {
-            sheep.forEach((sprite, index) => {
-                if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
-                    sprite.destroy();
-                    sheep.splice(index, 1);
-                }
-            })
-        }
-    });
 
     app.stage.addChild(emote_sprite);
 }

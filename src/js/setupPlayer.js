@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import setupChat from "./setupChat";
-import {app, gameHeight, gameWidth} from "./game";
+import {app, gameHeight, gameWidth, state} from "./game";
 
 let player;
 
@@ -34,13 +34,13 @@ export default function setupPlayer() {
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;
         app.stage.mousedown = () => {
-            mouseCoords.x = app.renderer.plugins.interaction.mouse.global.x;
-            mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
+            if(state.screen === 'playing') {
+                mouseCoords.x = app.renderer.plugins.interaction.mouse.global.x;
+                mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
+            }
         };
 
         app.ticker.add((delta) => {
-            player.acceleration.set(player.acceleration.x * 0.99, player.acceleration.y * 0.99);
-
             const toMouseDirection = new PIXI.Point(
                 mouseCoords.x - player.x,
                 mouseCoords.y - player.y,
@@ -56,7 +56,7 @@ export default function setupPlayer() {
                 player.position,
             );
 
-            const playerSpeed = distMousePlayer * 0.05;
+            const playerSpeed = (distMousePlayer * 5) * 0.01;
 
             player.acceleration.set(
                 Math.cos(angleToMouse) * playerSpeed,
