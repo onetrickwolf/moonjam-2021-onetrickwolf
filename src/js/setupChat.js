@@ -40,10 +40,35 @@ export default function setupChat() {
                 // Just add it if it does
                 add_emote(emote_resource, app.loader.resources, tags);
             }
-        } else {
-            gsap.to(sheep_map[tags['user-id']], {
-                x: 500, duration: 2, onInterrupt: () => { console.log('interrupted')}
-            });
+        } else if (message[0] === '!') {
+            let movex = sheep_map[tags['user-id']].x;
+            let movey = sheep_map[tags['user-id']].y;
+            const speed = 100;
+            switch(message) {
+                case '!N':
+                    movey -= speed;
+                    break;
+                case '!E':
+                    movex += speed;
+                    break;
+                case '!S':
+                    movey += speed;
+                    break;
+                case '!W':
+                    movex -= speed;
+                    break;
+                default:
+                // no movement
+            }
+
+            if(!sheep_map[tags['user-id']].moving) {
+                sheep_map[tags['user-id']].moving = true;
+                gsap.to(sheep_map[tags['user-id']], {
+                    x: movex, y: movey, duration: 3, onComplete: () => {
+                        sheep_map[tags['user-id']].moving = false
+                    }
+                });
+            }
         }
     });
 
