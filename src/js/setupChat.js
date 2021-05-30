@@ -2,12 +2,13 @@ import tmi from 'tmi.js';
 import { app, gameWidth, gameHeight, state } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
+import { gsap } from "gsap";
 
 let sheep_map = {};
 
 export default function setupChat() {
     const client = new tmi.Client({
-        channels: ['elajjaz']
+        channels: ['onetrickwolf']
     });
 
     client.connect();
@@ -39,6 +40,10 @@ export default function setupChat() {
                 // Just add it if it does
                 add_emote(emote_resource, app.loader.resources, tags);
             }
+        } else {
+            gsap.to(sheep_map[tags['user-id']], {
+                x: 500, duration: 2, onInterrupt: () => { console.log('interrupted')}
+            });
         }
     });
 

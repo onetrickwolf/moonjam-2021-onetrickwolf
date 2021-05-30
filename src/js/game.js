@@ -2,6 +2,14 @@ import * as PIXI from 'pixi.js';
 import bunny_png from '../images/bunny.png'
 import setupStats from './setupStats';
 import setupPlayer from "./setupPlayer";
+import { gsap } from "gsap";
+import { PixiPlugin } from "gsap/PixiPlugin";
+
+// register the plugin
+gsap.registerPlugin(PixiPlugin);
+
+// give the plugin a reference to the PIXI object
+PixiPlugin.registerPIXI(PIXI);
 
 // Game
 
