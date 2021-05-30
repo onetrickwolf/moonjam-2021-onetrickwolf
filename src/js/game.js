@@ -48,7 +48,7 @@ function setupPlayer() {
 
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;
-        app.stage.pointerdown = () => {
+        app.stage.mousedown = () => {
             mouseCoords.x = app.renderer.plugins.interaction.mouse.global.x;
             mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
         };
