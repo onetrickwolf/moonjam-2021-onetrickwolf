@@ -1,5 +1,5 @@
 import tmi from 'tmi.js';
-import { app, gameWidth, gameHeight } from './game';
+import { app, gameWidth, gameHeight, state } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
 
@@ -56,12 +56,14 @@ function add_emote(emote_resource, resources) {
     sheep.push(emote_sprite);
 
     app.ticker.add((delta) => {
-        sheep.forEach((sprite, index) => {
-            if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
-                sprite.destroy();
-                sheep.splice(index, 1);
-            }
-        })
+        if(state.screen === 'playing') {
+            sheep.forEach((sprite, index) => {
+                if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
+                    sprite.destroy();
+                    sheep.splice(index, 1);
+                }
+            })
+        }
     });
 
     app.stage.addChild(emote_sprite);

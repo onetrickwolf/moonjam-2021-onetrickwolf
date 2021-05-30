@@ -15,6 +15,10 @@ const app = new PIXI.Application({
     resolution: window.devicePixelRatio,
 });
 
+let state = {
+    screen: 'intro'
+}
+
 document.body.appendChild(app.view);
 
 setupPlayer();
@@ -30,6 +34,7 @@ app.stage.addChild(startText);
 
 function onClick() {
     startText.visible = false;
+    state.screen = 'playing';
 }
 
-export { app, gameWidth, gameHeight };
+export { app, gameWidth, gameHeight, state };
