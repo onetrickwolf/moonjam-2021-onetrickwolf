@@ -8,7 +8,7 @@ let sheep_map = {};
 
 export default function setupChat() {
     const client = new tmi.Client({
-        channels: ['onetrickwolf']
+        channels: ['xqcow']
     });
 
     client.connect();
@@ -19,10 +19,6 @@ export default function setupChat() {
         // console.log(tags.emotes);
         // console.log(`https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`);
 
-        let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 25;
-
-        let emote_resource = `emote_${emote_id}`;
-
         const loaderOptions = {
             loadType: PIXI.LoaderResource.LOAD_TYPE.IMAGE,
             xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
@@ -30,17 +26,21 @@ export default function setupChat() {
 
         // Check if user name already exists, do nothing for now if it does
         if(!sheep_map.hasOwnProperty(tags['user-id'])) {
-            // Check if emote already exists in resources
-            if (!app.loader.resources.hasOwnProperty(emote_resource)) {
-                // Load if it doesn't
-                app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
-                    add_emote(emote_resource, resources, tags);
-                });
-            } else {
-                // Just add it if it does
-                add_emote(emote_resource, app.loader.resources, tags);
+            if(tags.emotes) {
+                let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 305197735;
+                let emote_resource = `emote_${emote_id}`;
+                // Check if emote already exists in resources
+                if (!app.loader.resources.hasOwnProperty(emote_resource)) {
+                    // Load if it doesn't
+                    app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
+                        add_emote(emote_resource, resources, tags);
+                    });
+                } else {
+                    // Just add it if it does
+                    add_emote(emote_resource, app.loader.resources, tags);
+                }
             }
-        } else if (message[0] === '!') {
+        } else /*if (message[0] === '!')*/ { // removed for testing
             let movex = sheep_map[tags['user-id']].x;
             let movey = sheep_map[tags['user-id']].y;
             const speed = 100;
@@ -58,7 +58,8 @@ export default function setupChat() {
                     movex -= speed;
                     break;
                 default:
-                // no movement
+                    movex += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
+                    movey += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
             }
 
             if(!sheep_map[tags['user-id']].moving) {
@@ -76,8 +77,9 @@ export default function setupChat() {
         if(state.screen === 'playing') {
             for (const sheep in sheep_map) {
                 if (distanceBetweenTwoPoints(sheep_map[sheep].position, player.position) < 40) {
-                    sheep_map[sheep].destroy();
-                    delete sheep_map[sheep];
+                    sheep_map[sheep].visible = false;
+                    // sheep_map[sheep].destroy();
+                    // delete sheep_map[sheep];
                 }
             }
         }
