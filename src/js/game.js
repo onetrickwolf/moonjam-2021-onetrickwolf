@@ -16,7 +16,7 @@ const app = new PIXI.Application({
 });
 
 let state = {
-    screen: 'intro'
+    screen: 'playing' // Change to 'intro' for launch
 }
 
 document.body.appendChild(app.view);

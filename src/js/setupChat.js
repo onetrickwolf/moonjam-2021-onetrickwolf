@@ -3,11 +3,11 @@ import { app, gameWidth, gameHeight, state } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
 
-let sheep = [];
+let sheep_map = {};
 
 export default function setupChat() {
     const client = new tmi.Client({
-        channels: ['moonmoon']
+        channels: ['elajjaz']
     });
 
     client.connect();
@@ -27,26 +27,29 @@ export default function setupChat() {
             xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
         };
 
-        // Check if emote already exists in resources
-        if (!app.loader.resources.hasOwnProperty(emote_resource)) {
-            // Load if it doesn't
-            app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
-                add_emote(emote_resource, resources, tags);
-            });
-        } else {
-            // Just add it if it does
-            add_emote(emote_resource, app.loader.resources, tags);
+        // Check if user name already exists, do nothing for now if it does
+        if(!sheep_map.hasOwnProperty(tags['user-id'])) {
+            // Check if emote already exists in resources
+            if (!app.loader.resources.hasOwnProperty(emote_resource)) {
+                // Load if it doesn't
+                app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
+                    add_emote(emote_resource, resources, tags);
+                });
+            } else {
+                // Just add it if it does
+                add_emote(emote_resource, app.loader.resources, tags);
+            }
         }
     });
 
     app.ticker.add((delta) => {
         if(state.screen === 'playing') {
-            sheep.forEach((sprite, index) => {
-                if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
-                    sprite.destroy();
-                    sheep.splice(index, 1);
+            for (const sheep in sheep_map) {
+                if (distanceBetweenTwoPoints(sheep_map[sheep].position, player.position) < 40) {
+                    sheep_map[sheep].destroy();
+                    delete sheep_map[sheep];
                 }
-            })
+            }
         }
     });
 }
@@ -78,7 +81,9 @@ function add_emote(emote_resource, resources, tags) {
     name_text.x = (name_text.width / 2) * -1;
     name_text.y = -30;
 
-    sheep.push(emote_container);
+    emote_container.direction = null;
+
+    sheep_map[tags['user-id']] = emote_container;
 
     emote_container.addChild(emote_sprite);
     emote_container.addChild(name_text);
