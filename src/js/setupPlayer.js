@@ -41,10 +41,12 @@ export default function setupPlayer() {
                 mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
 
                 let diffx = player.x - mouseCoords.x;
-                let diffy = player.y - mouseCoords.y;
 
                 gsap.to(sheep_area, {
-                    x: sheep_area.x + diffx, y: sheep_area.y + diffy, duration: 3
+                    x: sheep_area.x + diffx, duration: 3
+                });
+                gsap.to(player, {
+                    y: mouseCoords.y, duration: 3
                 });
             }
         };
