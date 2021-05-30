@@ -57,7 +57,7 @@ function add_emote(emote_resource, resources) {
 
     app.ticker.add((delta) => {
         sheep.forEach((sprite, index) => {
-            if (distanceBetweenTwoPoints(sprite.position, player.position) < 35) {
+            if (distanceBetweenTwoPoints(sprite.position, player.position) < 40) {
                 sprite.destroy();
                 sheep.splice(index, 1);
             }
