@@ -29,7 +29,7 @@ startText.x = 10;
 startText.y = 10;
 startText.interactive = true;
 startText.buttonMode = true;
-startText.on('pointerdown', onClick);
+startText.on('pointerup', onClick);
 app.stage.addChild(startText);
 
 function onClick() {
