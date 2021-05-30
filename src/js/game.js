@@ -20,4 +20,16 @@ document.body.appendChild(app.view);
 setupPlayer();
 setupStats();
 
+const startText = new PIXI.Text('START');
+startText.x = 10;
+startText.y = 10;
+startText.interactive = true;
+startText.buttonMode = true;
+startText.on('pointerdown', onClick);
+app.stage.addChild(startText);
+
+function onClick() {
+    startText.visible = false;
+}
+
 export { app, gameWidth, gameHeight };

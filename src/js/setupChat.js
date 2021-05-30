@@ -40,8 +40,11 @@ export default function setupChat() {
 function add_emote(emote_resource, resources) {
     let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
 
-    emote_sprite.x = Math.floor(Math.random() * gameWidth);
-    emote_sprite.y = Math.floor(Math.random() * gameHeight);
+    emote_sprite.x = Math.floor(Math.random() * (gameWidth - 200) + 100);
+    emote_sprite.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+
+    emote_sprite.anchor.x = 0.5;
+    emote_sprite.anchor.y = 0.5;
 
     const fit = calculateAspectRatioFit(emote_sprite.width, emote_sprite.height, 28, 28);
     emote_sprite.width = fit.width;

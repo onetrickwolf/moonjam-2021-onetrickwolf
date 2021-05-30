@@ -29,7 +29,7 @@ export default function setupPlayer() {
         setupChat();
 
         player.acceleration = new PIXI.Point(0);
-        let mouseCoords = new PIXI.Point(0);
+        let mouseCoords = new PIXI.Point(20, gameHeight / 2);
 
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;
