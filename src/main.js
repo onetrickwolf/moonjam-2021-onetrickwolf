@@ -14,7 +14,7 @@ const createWindow = () => {
       nodeIntegration: true,
     },
     width: 1600,
-    height: 900,
+    height: 1000,
   });
 
   // and load the index.html of the app.
