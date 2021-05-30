@@ -5,10 +5,13 @@ import { player } from "./setupPlayer";
 import { gsap } from "gsap";
 
 let sheep_map = {};
+let sheep_area = new PIXI.Container();
 
 export default function setupChat() {
+    app.stage.addChild(sheep_area);
+
     const client = new tmi.Client({
-        channels: ['xqcow']
+        channels: ['moonmoon']
     });
 
     client.connect();
@@ -76,7 +79,8 @@ export default function setupChat() {
     app.ticker.add((delta) => {
         if(state.screen === 'playing') {
             for (const sheep in sheep_map) {
-                if (distanceBetweenTwoPoints(sheep_map[sheep].position, player.position) < 40) {
+                let trueSheepPos = new PIXI.Point(sheep_map[sheep].x + sheep_area.x, sheep_map[sheep].y + sheep_area.y)
+                if (distanceBetweenTwoPoints(trueSheepPos, player.position) < 40) {
                     sheep_map[sheep].visible = false;
                     // sheep_map[sheep].destroy();
                     // delete sheep_map[sheep];
@@ -120,7 +124,9 @@ function add_emote(emote_resource, resources, tags) {
     emote_container.addChild(emote_sprite);
     emote_container.addChild(name_text);
 
-    app.stage.addChild(emote_container);
+    sheep_area.addChild(emote_container);
+
+    //app.stage.addChild(emote_container);
 }
 
 function distanceBetweenTwoPoints(p1, p2) {
@@ -134,3 +140,5 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
     const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
     return { width: srcWidth*ratio, height: srcHeight*ratio };
 }
+
+export { sheep_area };

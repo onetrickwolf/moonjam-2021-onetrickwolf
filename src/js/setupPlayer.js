@@ -1,6 +1,8 @@
 import * as PIXI from "pixi.js";
 import setupChat from "./setupChat";
+import { sheep_area } from "./setupChat";
 import {app, gameHeight, gameWidth, state} from "./game";
+import { gsap } from "gsap";
 
 let player;
 
@@ -15,8 +17,8 @@ export default function setupPlayer() {
     app.loader.add('player', player_img, loaderOptions).load((loader, resources) => {
         player = new PIXI.Sprite(resources.player.texture);
 
-        player.x = Math.floor(Math.random() * gameWidth);
-        player.y = Math.floor(Math.random() * gameHeight);
+        player.x = gameWidth / 2;
+        player.y = gameHeight / 2;
 
         player.width = player.width / 2;
         player.height = player.height / 2;
@@ -37,35 +39,15 @@ export default function setupPlayer() {
             if(state.screen === 'playing') {
                 mouseCoords.x = app.renderer.plugins.interaction.mouse.global.x;
                 mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
+
+                let diffx = player.x - mouseCoords.x;
+                let diffy = player.y - mouseCoords.y;
+
+                gsap.to(sheep_area, {
+                    x: sheep_area.x + diffx, y: sheep_area.y + diffy, duration: 3
+                });
             }
         };
-
-        app.ticker.add((delta) => {
-            const toMouseDirection = new PIXI.Point(
-                mouseCoords.x - player.x,
-                mouseCoords.y - player.y,
-            );
-
-            const angleToMouse = Math.atan2(
-                toMouseDirection.y,
-                toMouseDirection.x,
-            );
-
-            const distMousePlayer = distanceBetweenTwoPoints(
-                mouseCoords,
-                player.position,
-            );
-
-            const playerSpeed = (distMousePlayer * 5) * 0.01;
-
-            player.acceleration.set(
-                Math.cos(angleToMouse) * playerSpeed,
-                Math.sin(angleToMouse) * playerSpeed,
-            );
-
-            player.x += player.acceleration.x * delta;
-            player.y += player.acceleration.y * delta;
-        });
     });
 }
 
