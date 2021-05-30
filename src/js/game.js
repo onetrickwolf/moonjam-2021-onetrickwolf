@@ -9,7 +9,7 @@ const gameWidth = 1280;
 const gameHeight = 720;
 
 const app = new PIXI.Application({
-    backgroundColor: 0xd3d3d3,
+    backgroundColor: 0xe2e2e2,
     width: gameWidth,
     height: gameHeight,
     resolution: window.devicePixelRatio,

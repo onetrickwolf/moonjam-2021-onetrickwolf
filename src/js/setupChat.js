@@ -31,11 +31,11 @@ export default function setupChat() {
         if (!app.loader.resources.hasOwnProperty(emote_resource)) {
             // Load if it doesn't
             app.loader.add(emote_resource, `https://static-cdn.jtvnw.net/emoticons/v1/${emote_id}/3.0`, loaderOptions).load((loader, resources) => {
-                add_emote(emote_resource, resources);
+                add_emote(emote_resource, resources, tags);
             });
         } else {
             // Just add it if it does
-            add_emote(emote_resource, app.loader.resources);
+            add_emote(emote_resource, app.loader.resources, tags);
         }
     });
 
@@ -51,11 +51,13 @@ export default function setupChat() {
     });
 }
 
-function add_emote(emote_resource, resources) {
-    let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
+function add_emote(emote_resource, resources, tags) {
+    let emote_container = new PIXI.Container();
 
-    emote_sprite.x = Math.floor(Math.random() * (gameWidth - 200) + 100);
-    emote_sprite.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+    emote_container.x = Math.floor(Math.random() * (gameWidth - 200) + 100);
+    emote_container.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+
+    let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
 
     emote_sprite.anchor.x = 0.5;
     emote_sprite.anchor.y = 0.5;
@@ -64,9 +66,24 @@ function add_emote(emote_resource, resources) {
     emote_sprite.width = fit.width;
     emote_sprite.height = fit.height;
 
-    sheep.push(emote_sprite);
+    let color = tags['color'] ? tags['color'] : '#ffffff';
 
-    app.stage.addChild(emote_sprite);
+    const style = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 10,
+        fill: [color],
+    });
+
+    const name_text = new PIXI.Text(tags['display-name'], style);
+    name_text.x = (name_text.width / 2) * -1;
+    name_text.y = -30;
+
+    sheep.push(emote_container);
+
+    emote_container.addChild(emote_sprite);
+    emote_container.addChild(name_text);
+
+    app.stage.addChild(emote_container);
 }
 
 function distanceBetweenTwoPoints(p1, p2) {
