@@ -2,6 +2,8 @@ import * as PIXI from "pixi.js";
 import setupChat from "./setupChat";
 import {app, gameHeight, gameWidth} from "./game";
 
+let player;
+
 export default function setupPlayer() {
     const player_img = 'https://static-cdn.jtvnw.net/emoticons/v2/1485944/default/dark/3.0';
 
@@ -9,8 +11,6 @@ export default function setupPlayer() {
         loadType: PIXI.LoaderResource.LOAD_TYPE.IMAGE,
         xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
     };
-
-    let player;
 
     app.loader.add('player', player_img, loaderOptions).load((loader, resources) => {
         player = new PIXI.Sprite(resources.player.texture);
@@ -75,3 +75,5 @@ function distanceBetweenTwoPoints(p1, p2) {
 
     return Math.hypot(a, b);
 }
+
+export { player };

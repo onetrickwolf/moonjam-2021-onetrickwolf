@@ -1,6 +1,7 @@
 import tmi from 'tmi.js';
 import { app, gameWidth, gameHeight } from './game';
 import * as PIXI from 'pixi.js';
+import { player } from "./setupPlayer";
 
 export default function setupChat() {
     const client = new tmi.Client({
@@ -37,6 +38,8 @@ export default function setupChat() {
     });
 }
 
+let sheep = [];
+
 function add_emote(emote_resource, resources) {
     let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
 
@@ -50,7 +53,25 @@ function add_emote(emote_resource, resources) {
     emote_sprite.width = fit.width;
     emote_sprite.height = fit.height;
 
+    sheep.push(emote_sprite);
+
+    app.ticker.add((delta) => {
+        sheep.forEach((sprite, index) => {
+            if (distanceBetweenTwoPoints(sprite.position, player.position) < 35) {
+                sprite.destroy();
+                sheep.splice(index, 1);
+            }
+        })
+    });
+
     app.stage.addChild(emote_sprite);
+}
+
+function distanceBetweenTwoPoints(p1, p2) {
+    const a = p1.x - p2.x;
+    const b = p1.y - p2.y;
+
+    return Math.hypot(a, b);
 }
 
 function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
