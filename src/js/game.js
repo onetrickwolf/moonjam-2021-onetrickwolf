@@ -44,11 +44,17 @@ function setupPlayer() {
         setupChat();
 
         player.acceleration = new PIXI.Point(0);
+        let mouseCoords = new PIXI.Point(0);
+
+        app.stage.interactive = true;
+        app.stage.hitArea = app.screen;
+        app.stage.pointerdown = () => {
+            mouseCoords.x = app.renderer.plugins.interaction.mouse.global.x;
+            mouseCoords.y = app.renderer.plugins.interaction.mouse.global.y;
+        };
 
         app.ticker.add((delta) => {
             player.acceleration.set(player.acceleration.x * 0.99, player.acceleration.y * 0.99);
-
-            const mouseCoords = app.renderer.plugins.interaction.mouse.global;
 
             const toMouseDirection = new PIXI.Point(
                 mouseCoords.x - player.x,
