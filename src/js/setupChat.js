@@ -29,7 +29,7 @@ export default function setupChat() {
 
         // Check if user name already exists, do nothing for now if it does
         if(!sheep_map.hasOwnProperty(tags['user-id'])) {
-            if(tags.emotes || true) { // true added for testing
+            if((tags.emotes || true) && state.screen === 'intro') { // true added for testing
                 let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 305197735;
                 let emote_resource = `emote_${emote_id}`;
                 // Check if emote already exists in resources
@@ -151,4 +151,4 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
     return { width: srcWidth*ratio, height: srcHeight*ratio };
 }
 
-export { sheep_area };
+export { sheep_area, sheep_map };

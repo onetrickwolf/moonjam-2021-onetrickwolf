@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import bunny_png from '../images/bunny.png'
 import setupStats from './setupStats';
-import setupPlayer from "./setupPlayer";
+import setupPlayer, {player} from "./setupPlayer";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin";
+import { sheep_map, sheep_area } from "./setupChat";
 
 // register the plugin
 gsap.registerPlugin(PixiPlugin);
@@ -46,8 +47,34 @@ joined.y = 40;
 app.stage.addChild(joined);
 
 function onClick() {
+    setupField();
     startText.visible = false;
     state.screen = 'playing';
+}
+
+function setupField() {
+    sheep_area.x = sheep_area.x + 800;
+
+    let currX = 0;
+    let currY = 50;
+
+    const spacing = 110;
+
+    for (const sheep in sheep_map) {
+        sheep_map[sheep].x = currX + getRandomInt(-20, 20);
+        sheep_map[sheep].y = currY + getRandomInt(-20, 20);
+        currY += spacing;
+        if(currY > gameHeight) {
+            currY = 50;
+            currX +=spacing;
+        }
+    }
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 export { app, gameWidth, gameHeight, state, joined };
