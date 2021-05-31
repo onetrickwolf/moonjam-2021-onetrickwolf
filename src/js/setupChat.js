@@ -125,14 +125,22 @@ function add_emote(emote_resource, resources, tags) {
     name_text.x = (name_text.width / 2) * -1;
     name_text.y = -30;
 
+    const graphics = new PIXI.Graphics();
+    graphics.lineStyle(0); // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+    graphics.beginFill(0xFFFFFF, 0.25);
+    graphics.drawCircle(0, 0, 10);
+    graphics.endFill();
+
     emote_container.direction = null;
 
     sheep_map[tags['user-id']] = emote_container;
 
     joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
 
+    emote_container.addChild(graphics);
     emote_container.addChild(emote_sprite);
     emote_container.addChild(name_text);
+
 
     sheep_area.addChild(emote_container);
 
