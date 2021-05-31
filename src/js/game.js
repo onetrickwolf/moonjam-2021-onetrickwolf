@@ -75,6 +75,7 @@ function setupField() {
     const spacing = 110;
 
     for (const sheep in sheep_map) {
+        gsap.killTweensOf(sheep_map[sheep]);
         sheep_map[sheep].x = currX + getRandomInt(-20, 20);
         sheep_map[sheep].y = currY + getRandomInt(-20, 20);
 
