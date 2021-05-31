@@ -13,7 +13,7 @@ const createWindow = () => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: true,
     },
-    width: 1600,
+    width: 1700,
     height: 1000,
   });
 
