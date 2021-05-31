@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 let sheep_map = {};
 let sheep_area = new PIXI.Container();
 
-const debug = true;
+const debug = false;
 
 export default function setupChat() {
     app.stage.addChild(sheep_area);

@@ -34,7 +34,7 @@ let state = {
 document.body.appendChild(app.view);
 
 setupPlayer();
-setupStats();
+// setupStats();
 
 const startText = new PIXI.Text('CLICK HERE TO START');
 startText.x = 10;
