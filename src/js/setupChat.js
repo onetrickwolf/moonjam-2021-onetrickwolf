@@ -46,7 +46,7 @@ export default function setupChat() {
         } else /*if (message[0] === '!')*/ { // removed for testing
             let movex = sheep_map[tags['user-id']].x;
             let movey = sheep_map[tags['user-id']].y;
-            const speed = 100;
+            const speed = state.chat_speed;
             switch(message) {
                 case '!N':
                     movey -= speed;
@@ -101,7 +101,7 @@ export default function setupChat() {
 function add_emote(emote_resource, resources, tags) {
     let emote_container = new PIXI.Container();
 
-    emote_container.x = Math.floor(Math.random() * (gameWidth - 200) + 100);
+    emote_container.x = Math.floor(Math.random() * (gameWidth - 500) + 500);
     emote_container.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
 
     let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
@@ -127,7 +127,7 @@ function add_emote(emote_resource, resources, tags) {
 
     const graphics = new PIXI.Graphics();
     graphics.lineStyle(0); // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
-    graphics.beginFill(0xFFFFFF, 0.25);
+    graphics.beginFill(0xFFFFFF, 0.5);
     graphics.drawCircle(0, 0, 10);
     graphics.endFill();
 

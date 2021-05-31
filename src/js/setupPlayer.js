@@ -44,10 +44,10 @@ export default function setupPlayer() {
                 let diffx = player.x - mouseCoords.x;
 
                 gsap.to(sheep_area, {
-                    x: sheep_area.x + diffx, duration: 3
+                    x: sheep_area.x + diffx, duration: state.player_speed
                 });
                 gsap.to(player, {
-                    y: mouseCoords.y, duration: 3
+                    y: mouseCoords.y, duration: state.player_speed
                 });
             }
         };

@@ -25,7 +25,10 @@ const app = new PIXI.Application({
 });
 
 let state = {
-    screen: 'intro' // Change to 'intro' for launch, 'playing' for test
+    screen: 'intro', // Change to 'intro' for launch, 'playing' for test
+    player_speed: 3,
+    chat_speed: 100,
+    level: 1
 }
 
 document.body.appendChild(app.view);
@@ -33,9 +36,9 @@ document.body.appendChild(app.view);
 setupPlayer();
 setupStats();
 
-const startText = new PIXI.Text('START');
+const startText = new PIXI.Text('CLICK HERE TO START');
 startText.x = 10;
-startText.y = 10;
+startText.y = 120;
 startText.interactive = true;
 startText.buttonMode = true;
 startText.on('pointerup', onClick);
@@ -43,17 +46,28 @@ app.stage.addChild(startText);
 
 const joined = new PIXI.Text('PLAYERS: 0');
 joined.x = 10;
-joined.y = 40;
+joined.y = 10;
 app.stage.addChild(joined);
+
+const level = new PIXI.Text('LEVEL: ' + state.level, {fontSize : 20});
+level.x = 10;
+level.y = 40;
+app.stage.addChild(level);
+
+const joinable = new PIXI.Text('!join [emote] to join this round', {fontFamily: 'Courier', fontSize : 16});
+joinable.x = 10;
+joinable.y = 70;
+app.stage.addChild(joinable);
 
 function onClick() {
     setupField();
     startText.visible = false;
+    joinable.text = 'joining locked until next round';
     state.screen = 'playing';
 }
 
 function setupField() {
-    sheep_area.x = sheep_area.x + 800;
+    sheep_area.x = 800;
 
     let currX = 0;
     let currY = 50;
@@ -104,7 +118,24 @@ export function setupGoal() {
         if(state.screen === 'playing') {
             let trueGoalPos = new PIXI.Point(goal.x + sheep_area.x, goal.y + sheep_area.y)
             if (distanceBetweenTwoPoints(trueGoalPos, player.position) < 80) {
-                goal.visible = false;
+                gsap.killTweensOf(sheep_area);
+                gsap.killTweensOf(player);
+
+                gsap.to(sheep_area, {
+                    x: 800, duration: 3
+                });
+                gsap.to(player, {
+                    y: gameHeight / 2, duration: 3, onComplete: () => {
+                        startText.visible = true;
+                        startText.text = 'CLICK HERE TO START NEXT LEVEL';
+                        state.player_speed *= 1.5;
+                        state.chat_speed +=10;
+                    }
+                });
+                state.screen = 'intro';
+                state.level++;
+                joinable.text = '!join [emote] to join this round';
+                level.text = 'LEVEL: ' + state.level;
             }
         }
     });
