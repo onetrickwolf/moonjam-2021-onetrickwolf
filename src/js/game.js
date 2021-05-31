@@ -99,6 +99,22 @@ export function setupGoal() {
 
         sheep_area.addChild(goal);
     });
+
+    app.ticker.add((delta) => {
+        if(state.screen === 'playing') {
+            let trueGoalPos = new PIXI.Point(goal.x + sheep_area.x, goal.y + sheep_area.y)
+            if (distanceBetweenTwoPoints(trueGoalPos, player.position) < 80) {
+                goal.visible = false;
+            }
+        }
+    });
+}
+
+function distanceBetweenTwoPoints(p1, p2) {
+    const a = p1.x - p2.x;
+    const b = p1.y - p2.y;
+
+    return Math.sqrt( a*a + b*b );
 }
 
 function getRandomInt(min, max) {
