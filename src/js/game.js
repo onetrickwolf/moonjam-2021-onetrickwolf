@@ -59,11 +59,36 @@ joinable.x = 10;
 joinable.y = 70;
 app.stage.addChild(joinable);
 
+const gameoverStyle = new PIXI.TextStyle({
+    fontFamily: 'Arial',
+    dropShadow: true,
+    dropShadowAlpha: 0.8,
+    dropShadowAngle: 2.1,
+    dropShadowBlur: 4,
+    dropShadowColor: '0x111111',
+    dropShadowDistance: 10,
+    fill: ['#ffffff'],
+    stroke: '#004620',
+    fontSize: 60,
+    fontWeight: 'lighter',
+    lineJoin: 'round',
+    strokeThickness: 12,
+});
+
+const gameoverText = new PIXI.Text('GAME OVER', gameoverStyle);
+gameoverText.skew.set(0.65, -0.3);
+gameoverText.anchor.set(0.5, 0.5);
+gameoverText.x = gameWidth / 2;
+gameoverText.y = gameHeight / 2;
+gameoverText.visible = false;
+app.stage.addChild(gameoverText);
+
 function onClick() {
     setupField();
     startText.visible = false;
     joinable.text = 'joining locked until next round';
     state.screen = 'playing';
+    gameoverText.visible = false;
 }
 
 function setupField() {
@@ -76,6 +101,7 @@ function setupField() {
 
     for (const sheep in sheep_map) {
         gsap.killTweensOf(sheep_map[sheep]);
+        sheep_map[sheep].moving = false;
         sheep_map[sheep].x = currX + getRandomInt(-20, 20);
         sheep_map[sheep].y = currY + getRandomInt(-20, 20);
 
@@ -155,4 +181,4 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-export { app, gameWidth, gameHeight, state, joined };
+export { app, gameWidth, gameHeight, state, joined, startText, joinable, gameoverText };

@@ -1,5 +1,5 @@
 import tmi from 'tmi.js';
-import { app, gameWidth, gameHeight, state, joined } from './game';
+import { app, gameWidth, gameHeight, state, joined, startText, joinable, gameoverText } from './game';
 import * as PIXI from 'pixi.js';
 import { player } from "./setupPlayer";
 import { gsap } from "gsap";
@@ -100,12 +100,27 @@ export default function setupChat() {
             for (const sheep in sheep_map) {
                 let trueSheepPos = new PIXI.Point(sheep_map[sheep].x + sheep_area.x, sheep_map[sheep].y + sheep_area.y)
                 if (distanceBetweenTwoPoints(trueSheepPos, player.position) < 40) {
-                    sheep_map[sheep].visible = false;
-                    if(!sheep_map[sheep].moving) {
-                        sheep_map[sheep].destroy();
-                        delete sheep_map[sheep];
-                        joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
-                    }
+                    gsap.killTweensOf(sheep_area);
+                    gsap.killTweensOf(player);
+
+                    gsap.to(sheep_area, {
+                        x: 800, duration: 3
+                    });
+                    gsap.to(player, {
+                        y: gameHeight / 2, duration: 3, onComplete: () => {
+                            startText.visible = true;
+                            startText.text = 'CLICK TRY AGAIN';
+                        }
+                    });
+                    gameoverText.visible = true;
+                    state.screen = 'intro';
+                    joinable.text = '!join [emote] to join this round';
+                    // sheep_map[sheep].visible = false;
+                    // if(!sheep_map[sheep].moving) {
+                    //     sheep_map[sheep].destroy();
+                    //     delete sheep_map[sheep];
+                    //     joined.text = 'PLAYERS: ' + Object.keys(sheep_map).length;
+                    // }
                 }
             }
         }
