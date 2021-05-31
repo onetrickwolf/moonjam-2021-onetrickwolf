@@ -30,7 +30,7 @@ export default function setupChat() {
         // Check if user name already exists, do nothing for now if it does
         if(!sheep_map.hasOwnProperty(tags['user-id'])) {
             if((tags.emotes || true) && state.screen === 'intro') { // true added for testing
-                let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 305197735;
+                let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 440;
                 let emote_resource = `emote_${emote_id}`;
                 // Check if emote already exists in resources
                 if (!app.loader.resources.hasOwnProperty(emote_resource)) {
@@ -101,8 +101,13 @@ export default function setupChat() {
 function add_emote(emote_resource, resources, tags) {
     let emote_container = new PIXI.Container();
 
-    emote_container.x = Math.floor(Math.random() * (gameWidth - 500) + 500);
-    emote_container.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+    if(state.level === 1) {
+        emote_container.x = Math.floor(Math.random() * (gameWidth - 500) + 500);
+        emote_container.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+    } else {
+        emote_container.x = getRandomInt(0, 400);
+        emote_container.y = Math.floor(Math.random() * (gameHeight - 100) + 100);
+    }
 
     let emote_sprite = new PIXI.Sprite(resources[emote_resource].texture);
 
@@ -157,6 +162,12 @@ function distanceBetweenTwoPoints(p1, p2) {
 function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
     const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
     return { width: srcWidth*ratio, height: srcHeight*ratio };
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 export { sheep_area, sheep_map };

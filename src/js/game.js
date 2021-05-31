@@ -26,7 +26,7 @@ const app = new PIXI.Application({
 
 let state = {
     screen: 'intro', // Change to 'intro' for launch, 'playing' for test
-    player_speed: 3,
+    player_speed: 2,
     chat_speed: 100,
     level: 1
 }
