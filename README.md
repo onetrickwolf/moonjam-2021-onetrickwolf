@@ -34,6 +34,6 @@ On line 16 you can set `channels: ['moonmoon']` to your own channel or a very ac
 
 If you are happy with the testing just set debug to false and set the channel back to moonmoon before building for Moon.
 
-I am also including some videos.
+I included two videos, one with some chat input examples and one debug play session.
 
 Please ping me if you need any help or questions happy to help :)
