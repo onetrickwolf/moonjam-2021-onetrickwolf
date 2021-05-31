@@ -11,7 +11,7 @@ export default function setupChat() {
     app.stage.addChild(sheep_area);
 
     const client = new tmi.Client({
-        channels: ['moonmoon']
+        channels: ['onetrickwolf']
     });
 
     client.connect();
@@ -29,7 +29,7 @@ export default function setupChat() {
 
         // Check if user name already exists, do nothing for now if it does
         if(!sheep_map.hasOwnProperty(tags['user-id'])) {
-            if((tags.emotes || true) && state.screen === 'intro') { // true added for testing
+            if((tags.emotes || true) && state.screen === 'intro' && message.toLowerCase().includes('!join')) { // true added for testing
                 let emote_id = tags.emotes ? Object.keys(tags.emotes)[0] : 440;
                 let emote_resource = `emote_${emote_id}`;
                 // Check if emote already exists in resources
@@ -43,26 +43,40 @@ export default function setupChat() {
                     add_emote(emote_resource, app.loader.resources, tags);
                 }
             }
-        } else /*if (message[0] === '!')*/ { // removed for testing
+        } else if (message[0] === '!') { // removed for testing
             let movex = sheep_map[tags['user-id']].x;
             let movey = sheep_map[tags['user-id']].y;
             const speed = state.chat_speed;
-            switch(message) {
-                case '!N':
-                    movey -= speed;
-                    break;
-                case '!E':
-                    movex += speed;
-                    break;
-                case '!S':
-                    movey += speed;
-                    break;
-                case '!W':
-                    movex -= speed;
-                    break;
-                default:
-                    movex += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
-                    movey += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
+
+            if(message[1]) {
+                switch (message[1].toLowerCase()) {
+                    case 'n':
+                        movey -= speed;
+                        break;
+                    case 'e':
+                        movex += speed;
+                        break;
+                    case 's':
+                        movey += speed;
+                        break;
+                    case 'w':
+                        movex -= speed;
+                        break;
+                    default:
+                        // movex += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
+                        // movey += ((Math.round(Math.random()) * 2 - 1) * speed) * Math.round(Math.random());
+                }
+            }
+
+            if(message[2]) {
+                switch (message[2].toLowerCase()) {
+                    case 'e':
+                        movex += speed;
+                        break;
+                    case 'w':
+                        movex -= speed;
+                        break;
+                }
             }
 
             if(!sheep_map[tags['user-id']].moving) {
