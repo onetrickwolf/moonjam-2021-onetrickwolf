@@ -4,7 +4,7 @@ import setupStats from './setupStats';
 import setupPlayer, {player} from "./setupPlayer";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin";
-import { sheep_map, sheep_area } from "./setupChat";
+import setupChat, { sheep_map, sheep_area } from "./setupChat";
 
 // register the plugin
 gsap.registerPlugin(PixiPlugin);
@@ -63,12 +63,42 @@ function setupField() {
     for (const sheep in sheep_map) {
         sheep_map[sheep].x = currX + getRandomInt(-20, 20);
         sheep_map[sheep].y = currY + getRandomInt(-20, 20);
+
+        goal.x = currX + 400 + getRandomInt(-20, 20);
+        goal.y = getRandomInt(gameHeight / 4, gameHeight - (gameHeight / 4));
+
         currY += spacing;
         if(currY > gameHeight) {
             currY = 50;
             currX +=spacing;
         }
     }
+}
+
+let goal;
+
+export function setupGoal() {
+    const goal_img = 'https://static-cdn.jtvnw.net/emoticons/v2/300579728/default/dark/3.0';
+
+    const loaderOptions = {
+        loadType: PIXI.LoaderResource.LOAD_TYPE.IMAGE,
+        xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB
+    };
+
+    app.loader.add('goal', goal_img, loaderOptions).load((loader, resources) => {
+        goal = new PIXI.Sprite(resources.goal.texture);
+
+        goal.x = gameWidth / 2 + (gameWidth / 4);
+        goal.y = gameHeight / 2;
+
+        goal.width = goal.width;
+        goal.height = goal.height;
+
+        goal.anchor.x = 0.5;
+        goal.anchor.y = 0.5;
+
+        sheep_area.addChild(goal);
+    });
 }
 
 function getRandomInt(min, max) {

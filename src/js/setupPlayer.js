@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import setupChat from "./setupChat";
 import { sheep_area } from "./setupChat";
-import {app, gameHeight, gameWidth, state} from "./game";
+import {app, gameHeight, gameWidth, state, setupGoal} from "./game";
 import { gsap } from "gsap";
 
 let player;
@@ -17,7 +17,7 @@ export default function setupPlayer() {
     app.loader.add('player', player_img, loaderOptions).load((loader, resources) => {
         player = new PIXI.Sprite(resources.player.texture);
 
-        player.x = gameWidth / 2;
+        player.x = gameWidth / 2 - (gameWidth / 4);
         player.y = gameHeight / 2;
 
         player.width = player.width / 2;
@@ -28,6 +28,7 @@ export default function setupPlayer() {
 
         app.stage.addChild(player);
 
+        setupGoal();
         setupChat();
 
         player.acceleration = new PIXI.Point(0);
