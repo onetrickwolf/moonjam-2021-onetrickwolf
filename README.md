@@ -1,7 +1,21 @@
 # Dodge The Chat by onetrickwolf
 
-Built with node 14.17.0 and v1.22.5 (other versions and npm will probably work)
-Needs git as dependecy to build electron apps I believe
+### Retrospective 07/27/2021
+
+Submission page: https://jam.moon2.tv/games/dodge-the-chat
+
+Clip: https://clips.twitch.tv/IcyIntelligentLyrebirdNerfBlueBlaster-l2lSQMdsh2oNEUZg
+
+My goal for this game jam was to try to make the game solo with zero prep, little reference, and in a reasonable work day without typical game jam crunch. I didn't expect the outcome to be too polished but just wanted to see if it was possible and was happy with the results!
+
+One of my rules to keep up the pace was to move on once something was working with little or no refactor. This led to some interesting patterns with circular dependecies and some potential issues with race conditions (luckily did not have large negative impact in practice).
+
+For the next game jam I think I would like to prepare a bit more with some libraries for processing gifs, learning PixiJS a bit more, and potentially moving away from using the chat for input and having some other sort of integration for controls. I also think Electron was difficult for OBS to capture so I may experiment with trying to improve that somehow.
+
+## Instructions for organizers
+
+Built with node 14.17.0 and yarn v1.22.5 (other versions and npm will probably work)
+Needs git as dependency to build electron apps I believe
 
 ```bash
 yarn install
